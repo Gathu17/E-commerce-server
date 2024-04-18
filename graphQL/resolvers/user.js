@@ -51,8 +51,6 @@ module.exports = {
             }catch(err){
                 throw new Error(err);
             }
-            }else{
-                console.log('haiya')
             }
            
         }
