@@ -13,7 +13,7 @@ function generateToken(user) {
         email: user.email,
         username: user.username,
         isAdmin: user.isAdmin
-    }, process.env.SECRET_KEY, {expiresIn: "1h"});
+    }, process.env.SECRET_KEY, {expiresIn: "6h"});
 }
 module.exports = {
     Query:{

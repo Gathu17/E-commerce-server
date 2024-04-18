@@ -10,15 +10,8 @@ module.exports = {
 
             
             if(cart){
-                console.log(cart)
-                return (cart)
-                  
-            }else if(cart === []){
-    
-                return null;
+                return (cart)           
             }
-           
-
         },
     },
     Mutation : {
@@ -46,11 +39,9 @@ module.exports = {
             const user = checkAuth(context);
             const [cart] = await Cart.find({userId: user.id})
             try{
-                
-               // cart.products.filter((product) => product.id !== productId)
-               const productIndex = cart.products.findIndex(p => p.id === productId);
+               const productIndex = cart.products.findIndex(p => p.productId === productId);
                  cart.products.splice(productIndex, 1);
-                console.log(cart)
+              
                 await cart.save();
                 return 'Removed from cart';
             }catch (error) {
@@ -58,14 +49,22 @@ module.exports = {
             }
         },
         async addProduct(_,{productId,quantity},context){
-            const user = checkAuth(context);
+        const user = checkAuth(context);
 
           if(user){
               let [cart] = await Cart.find({userId: user.id})
-              cart.products.unshift({
+              if(cart){
+                  cart.products.unshift({
                   productId,
                   quantity
               });
+              }else{
+                cart = new Cart({
+                    userId: user.id,
+                    products:{productId,quantity}
+                })
+              }
+              
               await cart.save();
              return cart; 
           }
